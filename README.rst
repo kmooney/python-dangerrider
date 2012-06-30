@@ -33,3 +33,4 @@ Dangerrider will have the following features:
     * Optional Persistence - pluggable persistence mechanisms to ensure that your
       data stays stored.  Sometimes you don't care about persisting
       data, so this is optional.
+
