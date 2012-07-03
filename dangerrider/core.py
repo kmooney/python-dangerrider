@@ -1,7 +1,16 @@
 class Table(object):
+    """
+        A table is an indexed container that holds objects.  As long as the 
+        indices are attached before the objects are added, then refresh_indices
+        must be called.
+    """
     object_list = []
     indices = {} 
     aggregators = [] 
+
+    def refresh_indices(self):
+        #TODO Implement refresh indices
+        pass
 
     def add_object(self, obj):
         self.object_list.append(obj)
@@ -44,6 +53,10 @@ class StorageMixin(object):
         return tuple([getattr(self,prop,None) for prop in index.properties])
         
 class Index(object):
+    """
+        An index holds references to objects in the Table with a dictionary 
+        that allows for quick lookup by tuple.
+    """
     name = ''
     properties = [ ]
     lookup = { } 
@@ -58,6 +71,10 @@ class Index(object):
         return self.lookup[index_tuple]
 
 class Aggregator(object):
+    """
+        An aggregator contains precalculated values for things like sums, averages, 
+        counts, etc.
+    """
     name = ''
     properties = [ ]
     value = None
