@@ -6,7 +6,7 @@ class Table(object):
     def add_object(self, obj):
         self.object_list.append(obj)
 
-        for index in self.indices.iteritems():
+        for index in self.indices.itervalues():
             index.update(obj)
 
         for aggregator in self.aggregators:
@@ -20,6 +20,7 @@ class Table(object):
             raise Exception("Keys and Values must have the same cardinality!")
         # first, see if the values are in the index
         if key_tuple in self.indices:
+            print "Found key"
             return self.indices[key_tuple].get_objects(value_tuple) 
 
         #if not, filter by key/value
@@ -50,11 +51,11 @@ class Index(object):
     def update(self, obj):
         index_values = obj.get_index_values( self )
         if index_values not in self.lookup:
-            self.lookup = [ ]
+            self.lookup[index_values] = [] 
         self.lookup[index_values].append( obj )
 
     def get_objects(self, index_tuple):
-        return self.lookup(index_tuple)
+        return self.lookup[index_tuple]
 
 class Aggregator(object):
     name = ''
