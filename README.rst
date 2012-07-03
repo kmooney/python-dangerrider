@@ -1,4 +1,4 @@
-python-dangerrider v0 
+Danger Rider
 ===========================
 
 Danger Rider is an indexing and retrieval system for Python objects.
