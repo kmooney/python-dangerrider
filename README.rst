@@ -37,3 +37,31 @@ Dangerrider will have the following features:
 * Utility Aggregators - aggregators that will "just work" out of the
   box.  With these, you can get sums, averages,
   and counts out of the box.  You can also define your own 
+
+What's Next
+=============
+
+So far, the table, and base-class indices and aggregators are implemented.
+Unit tests are written for the table and base-classes.
+
+Range and filter queries are also created.  
+
+Next, we will add the following utility classes to the utils package, along with
+unit tests:
+
+Aggregators
+_____________
+
+* Sum
+* Average
+* Count
+
+Indexes
+____________
+
+* NumericIndex
+* DateIndex
+* Others?
+
+
+
