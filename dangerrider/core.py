@@ -29,7 +29,6 @@ class Table(object):
             raise Exception("Keys and Values must have the same cardinality!")
         # first, see if the values are in the index
         if key_tuple in self.indices:
-            print "Found key"
             return self.indices[key_tuple].get_objects(value_tuple) 
 
         #if not, filter by key/value
