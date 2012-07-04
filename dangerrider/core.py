@@ -6,7 +6,7 @@ class Table(object):
     """
     object_list = []
     indices = {} 
-    aggregators = [] 
+    aggregators = {} 
 
     def refresh_indices(self):
         # clear all the indices
@@ -34,13 +34,24 @@ class Table(object):
 
     def add_aggregator(self, aggregator):
         self.aggregators[aggregator.name] = aggregator
+    
+    def get_query_info(self):
+        return self.query_info
 
+    def range(self, key_tuple, start, end=None):
+        if key_tuple in self.indices:
+            return self.indices[key_tuple].get_objects_by_range(start,end)
+ 
     def filter(self, key_tuple, value_tuple):
+        self.query_info = {'key_tuple': key_tuple, 'value_tuple': value_tuple }
         if len(key_tuple) != len(value_tuple):
             raise Exception("Keys and Values must have the same cardinality!")
         # first, see if the values are in the index
         if key_tuple in self.indices:
+            self.query_info['index'] = self.indices[key_tuple].name
             return self.indices[key_tuple].get_objects(value_tuple) 
+
+        self.query_info['index'] = 'No Index (Search)'
 
         #if not, filter by key/value
         rvalue = [ ] 
@@ -55,7 +66,8 @@ class Table(object):
             
     def metadata(self):
         return {'indices': self.indices, 
-                'aggregators': self.aggregators}        
+                'aggregators': self.aggregators,
+                'last_query_info': self.query_info}        
 
     def __init__(self):
         self.object_list = []
@@ -80,7 +92,8 @@ class Index(object):
 
     def __init__(self, name, properties = []):
         self.name = name
-        self.properties = properties
+        if len(properties) > 0:
+            self.properties = properties
 
     def update(self, obj):
         index_values = obj.get_index_values( self )
@@ -92,24 +105,24 @@ class Index(object):
         self.properties = props 
 
     def clear(self):
-        del self.lookup
         self.lookup = { } 
 
     def get_objects(self, index_tuple):
         return self.lookup[index_tuple]
 
-class RangeIndex(object):
+class RangeIndex(Index):
     """
         A range index refers to properties that fall within a range.  Range indexes
         can only index a single property (how to tell if a tuple is greater or less 
         than another?)  Range Indexes are not too useful for objects or words, but are
         super useful for numbers.  
+
+        There are surely more complicated, faster ways to do this.
     """ 
     def set_properties(self, props):
         if len(props) > 1:
             raise Exception ("Range Index Must be on a single property")
         super(RangeIndex, self).set_properties(props)
-        
 
     def update(self, obj):
         index_values = obj.get_index_values( self )
@@ -123,11 +136,11 @@ class RangeIndex(object):
         return super(RangeIndex, self).get_objects(index_tuple)
     
     def get_objects_by_range(self, range_start, range_end=None):
-        keys = sorted(list(self.properties.iterkeys()))
+        keys = sorted(list(self.lookup.iterkeys()))
         if range_end != None:
-            return [self.lookup[key] for key in keys if key >= range_start and key <= range_end]
+            return [a for b in [self.lookup[key] for key in keys if key >= (range_start,) and key <= (range_end,)] for a in b]
         else:
-            return [self.lookup[key] for key in keys if key >= range_start]
+            return [a for b in [self.lookup[key] for key in keys if key >= (range_start,)] for a in b]
     
 class Aggregator(object):
     """
