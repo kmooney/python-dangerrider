@@ -1,4 +1,6 @@
 import core
+import unittest
+
 
 class Sum(core.Aggregator):
     properties = []
@@ -36,21 +38,24 @@ class BasePerson(object):
 class Person(BasePerson, core.StorageMixin):
     pass
 
-table = core.Table()
 
-table.aggregators=[AverageAge(), TotalAge()]
+class DangerTests(unittest.TestCase):
+   
+    def setUp(self):
+        self.table = core.Table()
+        self.table.aggregators=[AverageAge(), TotalAge()]
+        self.table.add_index(NameIndex())
+        self.person = Person('Kevin', 32)
+        self.person2 = Person('Sarah', 26)
+        self.table.add_object(self.person)
+        self.table.add_object(self.person2)
+        
 
-table.add_index(NameIndex())
+    def testAggregators(self):
+        ret_person = self.table.filter(('name',),('Kevin',))
+        self.assertEqual(ret_person[0], self.person)
+        self.assertEqual(self.table.aggregators[0].value, 29)
+        self.assertEqual(self.table.aggregators[1].value, 58)   
 
-person = Person('Kevin', 32)
-person2 = Person('Sarah', 26)
-
-table.add_object(person)
-table.add_object(person2)
-print "Person is %s" %person
-print "Person2 is %s" %person
-print "Average Age: %s" %table.aggregators[0].value
-print "Total Age: %s" %table.aggregators[1].value
-
-ret_person = table.filter(('name',),('Kevin',))
-print "We got %s from query" %ret_person
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
