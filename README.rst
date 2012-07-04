@@ -30,7 +30,10 @@ Dangerrider will have the following features:
   can use to calculate sums, averages, counts, and anything else
   that spans objects or sets of objects.  Low latency.
 
-* Optional Persistence - pluggable persistence mechanisms to ensure that your
-  data stays stored.  Sometimes you don't care about persisting
+* Optional Persistence - pluggable persistence mechanisms to ensure that
+  your data stays stored.  Sometimes you don't care about persisting
   data, so this is optional.
 
+* Utility Aggregators - aggregators that will "just work" out of the
+  box.  With these, you can get sums, averages,
+  and counts out of the box.  You can also define your own 
