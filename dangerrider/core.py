@@ -44,6 +44,10 @@ class Table(object):
  
     def filter(self, key_tuple, value_tuple):
         self.query_info = {'key_tuple': key_tuple, 'value_tuple': value_tuple }
+        if type(key_tuple) != tuple:
+            raise TypeError("key_tuple must be tuple, got: %s"%type(key_tuple))
+        if type(value_tuple) != tuple:
+            raise TypeError("value_tuple must be tuple, got: %s"%type(value_tuple))
         if len(key_tuple) != len(value_tuple):
             raise Exception("Keys and Values must have the same cardinality!")
         # first, see if the values are in the index
@@ -156,3 +160,17 @@ class Aggregator(object):
 
     def aggregate():
         return ''
+
+class SetPropertyMixin(object):
+    """
+        SetPropertyMixin expects to be mixed into a class with a 
+        list called 'properties'.
+    """
+    def set_property(self, properties):
+        """
+            set_property expects a list of strings to set the
+            property. 
+        """
+        self.properties = properties
+
+
