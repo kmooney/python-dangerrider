@@ -20,6 +20,9 @@ class AgeIndex(core.RangeIndex):
 class BirthdayIndex(util.DateIndex):
     properties = ['birthday']
 
+class PersonCount(util.Count):
+    properties = ['name']
+
 class BasePerson(object):
     def __init__(self, name, age, birthday):
         self.name = name
@@ -34,19 +37,25 @@ class DangerTests(unittest.TestCase):
    
     def setUp(self):
         self.table = core.Table()
-        self.table.aggregators=[AverageAge(), TotalAge()]
-        self.table.add_index(NameIndex("NameIndex"))
+        self.table.aggregators=[AverageAge(), TotalAge(), PersonCount()]
+        nameindex = NameIndex("NameIndex")
+        self.table.add_index(nameindex)
         self.person = Person('Kevin', 32, datetime.datetime(year=1979, month=11, day=26))
         self.person2 = Person('Sarah', 26, datetime.datetime(year=1985, month=12, day=26))
         self.table.add_object(self.person)
         self.table.add_object(self.person2)
         
 
-    def testAggregators(self):
+    def testFilter(self):
         ret_person = self.table.filter(('name',),('Kevin',))
+        self.assertEqual(len(ret_person), 1)
         self.assertEqual(ret_person[0], self.person)
+
+    def testAggregators(self):
         self.assertEqual(self.table.aggregators[0].value, 29)
         self.assertEqual(self.table.aggregators[1].value, 58)   
+        self.assertEqual(self.table.aggregators[2].value, 2)   
+        
 
     def testRangeIndex(self):
         range_index = AgeIndex('AgeIndex')
@@ -91,6 +100,8 @@ class DangerTests(unittest.TestCase):
         self.assertEqual(len(ret_people), 2)
         self.assertEqual(ret_people[0], self.person)
         self.assertEqual(ret_people[1], self.person2)
+
+        
         
 
 
