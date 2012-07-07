@@ -15,12 +15,6 @@ perform very fast aggregate calculations on your in-memory data.
 
 Dangerrider will have the following features:
 
-* Dangershell, a shell that will allow you to access your stored
-  data and any annotations related to your object library.
-
-* DangerQL - A sql-like query language that returns your stored
-  objects instead of "rows." 
-
 * Indexes - explicit indexes, defined in python, that work hand-in-glove with
   your domain model to add aggregation and analysis capabilities.
   Indexes are always explicit, so as to allow the rapid insertion of
@@ -30,13 +24,30 @@ Dangerrider will have the following features:
   can use to calculate sums, averages, counts, and anything else
   that spans objects or sets of objects.  Low latency.
 
+* Utility Aggregators - aggregators that will "just work" out of the
+  box.  With these, you can get sums, averages,
+  and counts out of the box.  You can also define your own 
+
+* Dangershell, a shell that will allow you to access your stored
+  data and any annotations related to your object library.
+
+* DangerQL - A sql-like query language that returns your stored
+  objects instead of "rows." 
+
 * Optional Persistence - pluggable persistence mechanisms to ensure that
   your data stays stored.  Sometimes you don't care about persisting
   data, so this is optional.
 
-* Utility Aggregators - aggregators that will "just work" out of the
-  box.  With these, you can get sums, averages,
-  and counts out of the box.  You can also define your own 
+How to Use 
+============
+
+In Process
+-----------
+TBD
+
+As a Daemon
+------------
+TBD
 
 Roadmap
 =============
