@@ -20,7 +20,7 @@ class Table(object):
     def update_indices(self, obj):
         for index in self.indices.itervalues():
             index.update(obj)
-        
+
     def add_object(self, obj):
         self.object_list.append(obj)
 
@@ -52,10 +52,10 @@ class Table(object):
             raise Exception("Keys and Values must have the same cardinality!")
         # first, see if the values are in the index
         if key_tuple in self.indices:
-            self.query_info['index'] = self.indices[key_tuple].name
+            self.query_info['index'] = self.indices[key_tuple]
             return self.indices[key_tuple].get_objects(value_tuple) 
 
-        self.query_info['index'] = 'No Index (Search)'
+        self.query_info['index'] = None
 
         #if not, filter by key/value
         rvalue = [ ] 
@@ -67,6 +67,7 @@ class Table(object):
                     break
             if include:
                 rvalue.append(obj) 
+        return rvalue
             
     def metadata(self):
         return {'indices': self.indices, 
@@ -96,6 +97,7 @@ class Index(object):
 
     def __init__(self, name, properties = []):
         self.name = name
+        self.lookup = { }
         if len(properties) > 0:
             self.properties = properties
 
