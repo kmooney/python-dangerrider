@@ -38,30 +38,21 @@ Dangerrider will have the following features:
   box.  With these, you can get sums, averages,
   and counts out of the box.  You can also define your own 
 
-What's Next
+Roadmap
 =============
 
-So far, the table, and base-class indices and aggregators are implemented.
-Unit tests are written for the table and base-classes.
+Utility aggregators have been added.  Next, we should add the following:
 
-Range and filter queries are also created.  
+* Ability to do sorting on results (indexed sorting?)
+* Ability to limit results
+* Grouping for aggregates
+* Bigger dataset tests (to prove that this will really be a helpful thing!)
+* Query gateway so developers don't have to structure queries in tuples...
+* Unit tests for all..
 
-Next, we will add the following utility classes to the utils package, along with
-unit tests:
+After that, we will add (gevent based?) danger rider daemon, so we can access the 
+fast ram-persisted datastore through a server.
 
-Aggregators
-_____________
+After that, dangershell to access the daemon.
 
-* Sum
-* Average
-* Count
-
-Indexes
-____________
-
-* NumericIndex
-* DateIndex
-* Others?
-
-
-
+Finally, DangerQL.
